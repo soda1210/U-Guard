@@ -671,3 +671,4 @@ const unsigned char number[10][256]PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,
 }
+}
