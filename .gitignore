@@ -50,3 +50,15 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# VScode
+# Ignore all .vscode settings by default
+.vscode/*
+
+# But include specific settings files
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# Ignore any other personal settings files
+.vscode/private-settings.json
