@@ -62,3 +62,9 @@ dkms.conf
 
 # Ignore any other personal settings files
 .vscode/private-settings.json
+
+# System files
+*.bat
+*.bin
+*.log
+*.cache
