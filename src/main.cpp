@@ -18,9 +18,9 @@ int CS_Pin = 14;
 // FIXME: This include after the defines
 #include <Arduino.h>
 #include <SPI.h>
-#include "../ePaperDisplay/ePaperTools.h"
-#include "../ePaperDisplay/example.h"
-#include "../ePaperDisplay/number.h"
+#include "ePaperTools.h"
+#include "example.h"
+#include "number.h"
 
 void setup() {
   Serial.begin(9600);
