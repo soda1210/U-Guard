@@ -1,9 +1,4 @@
-#include <SPI.h>
-#include "ePaperDisplay/ePaperTools.h"
-#include "ePaperDisplay/example.h"
-#include "ePaperDisplay/number.h"
-
-//IO settingsx  
+//IO setting
 int BUSY_Pin = 33;
 int RES_Pin = 32;
 int DC_Pin = 27;
@@ -18,6 +13,12 @@ int CS_Pin = 14;
 #define EPD_W21_RST_0 digitalWrite(RES_Pin, LOW)
 #define EPD_W21_RST_1 digitalWrite(RES_Pin, HIGH)
 #define isEPD_W21_BUSY digitalRead(BUSY_Pin)
+
+// FIXME: This include after the defines
+#include <SPI.h>
+#include "ePaperDisplay/ePaperTools.h"
+#include "ePaperDisplay/example.h"
+#include "ePaperDisplay/number.h"
 
 void setup() {
   Serial.begin(9600);
@@ -38,12 +39,12 @@ void loop() {
   // EPD_WhiteScreen_ALL(gImage_1);  //Refresh the picture in full screen
   // delay(2000);
 
+  Serial.println("Start!");
   EPD_HW_Init();
-  Serial.println("show gImage_basemap");
   EPD_SetRAMValue_BaseMap(autoMode);  //Partial refresh background color,Brush map is a must, please do not delete
   delay(2000);
   
-  for (miao_H = 0; miao_H < 6; miao_H++) {
+  for (miao_H = 0; miao_H < 10; miao_H++) {
     for (miao_L = 0; miao_L < 10; miao_L++) {
       displayNumber(64, 122, number[miao_L],           //x-A,y-A,DATA-A
                           96, 122, number[miao_H], 64, 32);  //x-B,y-B,DATA-B,Resolution 32*64
