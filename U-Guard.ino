@@ -1,6 +1,8 @@
 #include <SPI.h>
 #include "ePaperDisplay/example.h"
-//IO settings
+#include "ePaperDisplay/number.h"
+
+//IO settingsx  
 int BUSY_Pin = 33;
 int RES_Pin = 32;
 int DC_Pin = 27;
@@ -58,62 +60,29 @@ void setup() {
   SPI.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
   SPI.begin();
 }
-////////Partial refresh schematic////////////////
-
-/////Y/// (0,0)               /---/(x,y)
-//                 /---/
-//                /---/
-//x
-//
-//
-//Tips//
-/*When the electronic paper is refreshed in full screen, the picture flicker is a normal phenomenon, and the main function is to clear the display afterimage in the previous picture.
-  When the local refresh is performed, the screen does not flash.*/
-/*When you need to transplant the driver, you only need to change the corresponding IO. The BUSY pin is the input mode and the others are the output mode. */
 
 void loop() {
   unsigned char fen_L, fen_H, miao_L, miao_H;
 
-  // EPD_HW_Init();                  //Electronic paper initialization
+  // EPD_HW_Init();   //Electronic paper initialization
   // Serial.println("show gImage_1");
   // EPD_WhiteScreen_ALL(gImage_1);  //Refresh the picture in full screen
   // delay(2000);
 
-  //////////////////////Partial refresh digital presentation//////////////////////////////////////
-  EPD_HW_Init();                            //Electronic paper initialization
+  EPD_HW_Init();
   Serial.println("show gImage_basemap");
   EPD_SetRAMValue_BaseMap(autoMode);  //Partial refresh background color,Brush map is a must, please do not delete
   delay(2000);
-
-  
-  // for (fen_H = 0; fen_H < 6; fen_H++) {
-  //   for (fen_L = 0; fen_L < 10; fen_L++) {
-  //     for (miao_H = 0; miao_H < 6; miao_H++) {
-  //       for (miao_L = 0; miao_L < 10; miao_L++) {
-  //         EPD_Dis_Part_myself(64, 40, Num[miao_L],           //x-A,y-A,DATA-A
-  //                             64, 72, Num[miao_H],           //x-B,y-B,DATA-B
-  //                             64, 112, gImage_numdot,        //x-C,y-C,DATA-C
-  //                             64, 154, Num[fen_L],           //x-D,y-D,DATA-D
-  //                             64, 186, Num[fen_H], 32, 64);  //x-E,y-E,DATA-E,Resolution 32*64
-
-  //         // if ((fen_L == 0) && (miao_H == 0) && (miao_L == 5))
-  //         //   goto Clear;
-  //       }
-  //     }
-  //   }
-  // }
-
   
   for (miao_H = 0; miao_H < 6; miao_H++) {
     for (miao_L = 0; miao_L < 10; miao_L++) {
-      displayNumber(64, 122, Num[miao_L],           //x-A,y-A,DATA-A
-                          96, 122, Num[miao_H], 64, 32);  //x-B,y-B,DATA-B,Resolution 32*64
+      displayNumber(64, 122, number[miao_L],           //x-A,y-A,DATA-A
+                          96, 122, number[miao_H], 64, 32);  //x-B,y-B,DATA-B,Resolution 32*64
 
       // if ((fen_L == 0) && (miao_Hz == 0) && (miao_L == 5))
       //   goto Clear;
     }
   }
-//   ////////////////////////////////////////////////////////////////////////
 //   //Clean
 // Clear:
 //   delay(2000);              //2s
@@ -125,7 +94,7 @@ void loop() {
 }
 
 
-///////////////////EXTERNAL FUNCTION////////////////////////////////////////////////////////////////////////
+///////////////////EXTERNAL FUNCTION////////////////////////////
 /////////////////////delay//////////////////////////////////////
 void driver_delay_us(unsigned int xus)  //1us
 {
