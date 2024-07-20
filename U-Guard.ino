@@ -15,6 +15,7 @@ int CS_Pin = 14;
 #define isEPD_W21_BUSY digitalRead(BUSY_Pin)
 
 // FIXME: This include after the defines
+#include <Arduino.h>
 #include <SPI.h>
 #include "ePaperDisplay/ePaperTools.h"
 #include "ePaperDisplay/example.h"
