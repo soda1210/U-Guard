@@ -1,3 +1,6 @@
+#ifndef NUMBER_H
+#define NUMBER_H
+
 const unsigned char number[10][256]PROGMEM = {
 //0
 // weight: 64 bit
@@ -672,3 +675,5 @@ const unsigned char number[10][256]PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,
 }
 };
+
+#endif
