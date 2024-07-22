@@ -54,8 +54,6 @@ void loop()
       bike.speed = 10 * miao_H + miao_L;
       reflashing_screen(&bike);
       delay(100);
-      // displayNumber(64, 122, number[miao_L],
-      //               96, 122, number[miao_H], 64, 32);
     }
   }
 }
