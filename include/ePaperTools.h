@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 #include <SPI.h>
+#include <Display.h>
+#include <image.h>
 
 // IO setting
 int BUSY_Pin = 33;
@@ -55,61 +57,123 @@ void displayNumber(unsigned int x_startA, unsigned int y_startA, const unsigned 
                    unsigned int x_startB, unsigned int y_startB, const unsigned char *datasB,
                    unsigned int PART_COLUMN, unsigned int PART_LINE);
 
-// void displayKeyMode(Bike *bike);
+void writeBlack(unsigned int x_start, unsigned int x_end,
+                unsigned int y_start1, unsigned int y_end1,
+                unsigned int y_start2, unsigned int y_end2,
+          const unsigned char *datas, unsigned int PART_COLUMN,unsigned int PART_LINE);
 
-// void displayBikeMode(Bike *bike)
-// {
-//   unsigned int i;
-//   unsigned int x_end, y_start1, y_start2, y_end1, y_end2;
-//   x_start = x_start / 8;
-//   x_end = x_start + PART_LINE / 8 - 1;
+struct Coordinates {
+    unsigned int x_start;
+    unsigned int x_end;
+    unsigned int y_start1;
+    unsigned int y_start2;
+    unsigned int y_end1;
+    unsigned int y_end2;
+};
 
-//   y_start1 = 0;
-//   y_start2 = y_start;
-//   if (y_start >= 256)
-//   {
-//     y_start1 = y_start2 / 256;
-//     y_start2 = y_start2 % 256;
-//   }
-//   y_end1 = 0;
-//   y_end2 = y_start + PART_COLUMN - 1;
-//   if (y_end2 >= 256)
-//   {
-//     y_end1 = y_end2 / 256;
-//     y_end2 = y_end2 % 256;
-//   }
-//   // Add hardware reset to prevent background color change
-//   EPD_W21_RST_0; // Module reset
-//   delay(10);     // At least 10ms delay
-//   EPD_W21_RST_1;
-//   delay(10); // At least 10ms delay
+Coordinates transformXY(unsigned int x_start, unsigned int x_end,
+                unsigned int y_start1, unsigned int y_end1,
+                unsigned int y_start2, unsigned int y_end2,
+                unsigned int PART_COLUMN,unsigned int PART_LINE);
 
-//   // Lock the border to prevent flashing
-//   Epaper_Write_Command(0x3C); // BorderWavefrom,
-//   Epaper_Write_Data(0x80);
-//   //
-//   Epaper_Write_Command(0x44);  // set RAM x address start/end, in page 35
-//   Epaper_Write_Data(x_start);  // RAM x address start at 00h;
-//   Epaper_Write_Data(x_end);    // RAM x address end at 0fh(15+1)*8->128
-//   Epaper_Write_Command(0x45);  // set RAM y address start/end, in page 35
-//   Epaper_Write_Data(y_start2); // RAM y address start at 0127h;
-//   Epaper_Write_Data(y_start1); // RAM y address start at 0127h;
-//   Epaper_Write_Data(y_end2);   // RAM y address end at 00h;
-//   Epaper_Write_Data(y_end1);   // ????=0
+void writeBlack(unsigned int x_start, unsigned int x_end,
+          unsigned int y_start1, unsigned int y_end1,
+          unsigned int y_start2, unsigned int y_end2,
+          const unsigned char *datas, unsigned int PART_COLUMN,unsigned int PART_LINE)
+{
+  Epaper_Write_Command(0x44);  // set RAM x address start/end, in page 35
+  Epaper_Write_Data(x_start); // RAM x address start at 00h;
+  Epaper_Write_Data(x_end);    // RAM x address end at 0fh(15+1)*8->128
+  Epaper_Write_Command(0x45);  // set RAM y address start/end, in page 35
+  Epaper_Write_Data(y_start2); // RAM y address start at 0127h;
+  Epaper_Write_Data(y_start1); // RAM y address start at 0127h;
+  Epaper_Write_Data(y_end2);   // RAM y address end at 00h;
+  Epaper_Write_Data(y_end1);
 
-//   Epaper_Write_Command(0x4E); // set RAM x address count to 0;
-//   Epaper_Write_Data(x_start);
-//   Epaper_Write_Command(0x4F); // set RAM y address count to 0X127;
-//   Epaper_Write_Data(y_start2);
-//   Epaper_Write_Data(y_start1);
+  Epaper_Write_Command(0x4E); // set RAM x address count to 0;
+  Epaper_Write_Data(x_start);
+  Epaper_Write_Command(0x4F); // set RAM y address count to 0X127;
+  Epaper_Write_Data(y_start2);
+  Epaper_Write_Data(y_start1);
 
-//   Epaper_Write_Command(0x24); // Write Black and White image to RAM
-//   for (i = 0; i < PART_COLUMN * PART_LINE / 8; i++)
-//   {
-//     Epaper_Write_Data(pgm_read_byte(&datas[i]));
-//   }
-//   EPD_Part_Update();
-// }
+  Epaper_Write_Command(0x24); // Write Black and White image to RAM
+  for (int i = 0; i < PART_COLUMN * PART_LINE / 8; i++)
+  {
+    Epaper_Write_Data(pgm_read_byte(&datas[i]));
+  }
+}
+
+Coordinates transformXY(unsigned int x_start, unsigned int y_start,
+                unsigned int PART_COLUMN,unsigned int PART_LINE){
+  Coordinates result;
+  unsigned int x_end, y_start1, y_start2, y_end1, y_end2;
+  result.x_start = x_start / 8; // Convert to byte
+  result.x_end = result.x_start + PART_LINE / 8 - 1;
+
+  result.y_start1 = 0;
+  result.y_start2 = y_start - 1;
+  if (y_start >= 256)
+  {
+      result.y_start1 = result.y_start2 / 256;
+      result.y_start2 = result.y_start2 % 256;
+  }
+  result.y_end1 = 0;
+  result.y_end2 = y_start + PART_COLUMN - 1;
+  if (result.y_end2 >= 256)
+  {
+      result.y_end1 = result.y_end2 / 256;
+      result.y_end2 = result.y_end2 % 256;
+  }
+
+  return result;
+}
+
+void displayNumber(unsigned int x_startA, unsigned int y_startA, const unsigned char *datasA,
+                   unsigned int x_startB, unsigned int y_startB, const unsigned char *datasB,
+                   unsigned int PART_COLUMN, unsigned int PART_LINE)
+{
+  // Reset
+  EPD_W21_RST_0; // Module reset
+  delay(10);     // At least 10ms delay
+  EPD_W21_RST_1;
+  delay(10); // At least 10ms delay
+
+  Epaper_Write_Command(0x3C); // BorderWavefrom
+  Epaper_Write_Data(0x80);
+
+  // 個位數
+  Coordinates tramXY = transformXY(x_startA, y_startA, PART_COLUMN, PART_LINE);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1, tramXY.y_start2, tramXY.y_end2, datasA, PART_COLUMN, PART_LINE);
+  // 十位數
+  tramXY = transformXY(x_startB, y_startB, PART_COLUMN, PART_LINE);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1, tramXY.y_start2, tramXY.y_end2, datasB, PART_COLUMN, PART_LINE);
+  EPD_Part_Update();
+}
+
+void displayBikeMode(Bike *bike){
+  Coordinates tramXY;
+
+  // Reset
+  EPD_W21_RST_0; // Module reset
+  delay(10);     // At least 10ms delay
+  EPD_W21_RST_1;
+  delay(10); // At least 10ms delay
+
+  Epaper_Write_Command(0x3C); // BorderWavefrom
+  Epaper_Write_Data(0x80);
+
+  // FIXME: import the image to prompt
+
+  // 電池
+  unsigned int column = 40;
+  unsigned int line = 40;
+  const unsigned char *datasB;
+  tramXY = transformXY(6, 153, column, line);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1, tramXY.y_start2, tramXY.y_end2, datasA, column, line);
+  // 十位數
+  tramXY = transformXY(x_startB, y_startB, PART_COLUMN, PART_LINE);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1, tramXY.y_start2, tramXY.y_end2, datasB, PART_COLUMN, PART_LINE);
+}
 
 //////////////////////SPI///////////////////////////////////
 
@@ -134,7 +198,6 @@ void Epaper_Write_Data(unsigned char command)
 }
 
 /////////////////EPD settings Functions/////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
 void EPD_HW_Init(void)
 {
   EPD_W21_RST_0; // Module reset
@@ -508,102 +571,6 @@ void EPD_Dis_Part_myself(unsigned int x_startA, unsigned int y_startA, const uns
   {
     Epaper_Write_Data(pgm_read_byte(&datasE[i]));
   }
-  EPD_Part_Update();
-}
-
-void displayNumber(unsigned int x_startA, unsigned int y_startA, const unsigned char *datasA,
-                   unsigned int x_startB, unsigned int y_startB, const unsigned char *datasB,
-                   unsigned int PART_COLUMN, unsigned int PART_LINE)
-{
-  unsigned int i;
-  unsigned int x_end, y_start1, y_start2, y_end1, y_end2;
-
-  x_startA = x_startA / 8;
-  x_end = x_startA + PART_LINE / 8 - 1;
-
-  y_start1 = 0;
-  y_start2 = y_startA - 1;
-  if (y_startA >= 256)
-  {
-    y_start1 = y_start2 / 256;
-    y_start2 = y_start2 % 256;
-  }
-  y_end1 = 0;
-  y_end2 = y_startA + PART_COLUMN - 1;
-  if (y_end2 >= 256)
-  {
-    y_end1 = y_end2 / 256;
-    y_end2 = y_end2 % 256;
-  }
-  // Reset
-  EPD_W21_RST_0; // Module reset
-  delay(10);     // At least 10ms delay
-  EPD_W21_RST_1;
-  delay(10); // At least 10ms delay
-
-  Epaper_Write_Command(0x3C); // BorderWavefrom
-  Epaper_Write_Data(0x80);
-  //
-  Epaper_Write_Command(0x44);  // set RAM x address start/end, in page 35
-  Epaper_Write_Data(x_startA); // RAM x address start at 00h;
-  Epaper_Write_Data(x_end);    // RAM x address end at 0fh(15+1)*8->128
-  Epaper_Write_Command(0x45);  // set RAM y address start/end, in page 35
-  Epaper_Write_Data(y_start2); // RAM y address start at 0127h;
-  Epaper_Write_Data(y_start1); // RAM y address start at 0127h;
-  Epaper_Write_Data(y_end2);   // RAM y address end at 00h;
-  Epaper_Write_Data(y_end1);
-
-  Epaper_Write_Command(0x4E); // set RAM x address count to 0;
-  Epaper_Write_Data(x_startA);
-  Epaper_Write_Command(0x4F); // set RAM y address count to 0X127;
-  Epaper_Write_Data(y_start2);
-  Epaper_Write_Data(y_start1);
-
-  Epaper_Write_Command(0x24); // Write Black and White image to RAM
-  for (i = 0; i < PART_COLUMN * PART_LINE / 8; i++)
-  {
-    Epaper_Write_Data(pgm_read_byte(&datasA[i]));
-  }
-  // Data B/////////////////////////////////////
-  x_startB = x_startB / 8; // Convert to byte
-  x_end = x_startB + PART_LINE / 8 - 1;
-
-  y_start1 = 0;
-  y_start2 = y_startB - 1;
-  if (y_startB >= 256)
-  {
-    y_start1 = y_start2 / 256;
-    y_start2 = y_start2 % 256;
-  }
-  y_end1 = 0;
-  y_end2 = y_startB + PART_COLUMN - 1;
-  if (y_end2 >= 256)
-  {
-    y_end1 = y_end2 / 256;
-    y_end2 = y_end2 % 256;
-  }
-
-  Epaper_Write_Command(0x44);  // set RAM x address start/end, in page 35
-  Epaper_Write_Data(x_startB); // RAM x address start at 00h;
-  Epaper_Write_Data(x_end);    // RAM x address end at 0fh(15+1)*8->128
-  Epaper_Write_Command(0x45);  // set RAM y address start/end, in page 35
-  Epaper_Write_Data(y_start2); // RAM y address start at 0127h;
-  Epaper_Write_Data(y_start1); // RAM y address start at 0127h;
-  Epaper_Write_Data(y_end2);   // RAM y address end at 00h;
-  Epaper_Write_Data(y_end1);
-
-  Epaper_Write_Command(0x4E); // set RAM x address count to 0;
-  Epaper_Write_Data(x_startB);
-  Epaper_Write_Command(0x4F); // set RAM y address count to 0X127;
-  Epaper_Write_Data(y_start2);
-  Epaper_Write_Data(y_start1);
-
-  Epaper_Write_Command(0x24); // Write Black and White image to RAM
-  for (i = 0; i < PART_COLUMN * PART_LINE / 8; i++)
-  {
-    Epaper_Write_Data(pgm_read_byte(&datasB[i]));
-  }
-
   EPD_Part_Update();
 }
 
