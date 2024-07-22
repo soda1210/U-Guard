@@ -43,8 +43,14 @@ void reflashing_screen(Bike *bike){
     int speed_int = (int)bike->speed; // 取整數部分
     int tens = (speed_int / 10) % 10; // 取十位數
     int ones = speed_int % 10;        // 取個位數
+
+
     displayNumber(64, 122, number[ones],
                     96, 122, number[tens], 64, 32);
+    delay(100);
+    
+    EPD_Dis_Part(3, 196, battery[0], 40, 40);
+    delay(100);
 }
 
 #endif // DISPLAY_H
