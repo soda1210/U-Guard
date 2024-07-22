@@ -1,5 +1,6 @@
-///////////////////EXTERNAL FUNCTION////////////////////////////
-/////////////////////delay//////////////////////////////////////
+#ifndef DELAY_TOOLS_H
+#define DELAY_TOOLS_H
+
 void driver_delay_us(unsigned int xus)  //1us
 {
   for (; xus > 1; xus--)
@@ -23,3 +24,5 @@ void DELAY_S(unsigned int delaytime) {
     }
   }
 }
+
+#endif
