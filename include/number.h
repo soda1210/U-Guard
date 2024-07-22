@@ -2,9 +2,9 @@
 #define NUMBER_H
 
 const unsigned char number[10][256]PROGMEM = {
-//0
 // weight: 64 bit
 // height: 32 bit
+//0
 {
     0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,
