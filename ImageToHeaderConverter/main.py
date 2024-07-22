@@ -3,35 +3,51 @@ import numpy as np
 import argparse
 import os
 
+
 def image_to_c_array(image_path, output_file, width=200, height=200, bit_depth=8, invert=False, rotate=False):
-    # 讀取圖片
-    image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    
+    # 讀取圖片（包含 Alpha 通道）
+    image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
+
+    if image.shape[2] == 4:  # 如果包含 Alpha 通道
+        # 提取 Alpha 通道
+        alpha_channel = image[:, :, 3]
+        # 將 Alpha 通道轉換為二值化圖片
+        _, binary_alpha = cv2.threshold(alpha_channel, 128, 255, cv2.THRESH_BINARY)
+        # 用白色填充透明區域
+        image = cv2.cvtColor(image, cv2.COLOR_BGRA2BGR)
+        image[binary_alpha == 0] = [255, 255, 255]
+        # 將圖片轉換為灰階
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    else:
+        # 如果不包含 Alpha 通道，直接轉換為灰階
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
     # 進行左右鏡像
     image = cv2.flip(image, 1)
-    
+
     # 調整圖片大小
     image = cv2.resize(image, (width, height))
-    
+
     # 進行二值化處理
     _, image = cv2.threshold(image, 128, 255, cv2.THRESH_BINARY)
-    
+
     # 黑白轉換
     if invert:
         image = cv2.bitwise_not(image)
-    
+
     # -90度旋轉
     if rotate:
         image = cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE)
-    
+        width, height = height, width  # 交換寬度和高度
+
     # 將每一行轉換為指定 bit_depth 的位元，並將其轉換為 byte
     byte_array = []
     for row in image:
         bits = ''.join(['1' if pixel == 255 else '0' for pixel in row])
         for i in range(0, len(bits), bit_depth):
-            byte = bits[i:i+bit_depth]
+            byte = bits[i:i + bit_depth]
             byte_array.append(int(byte, 2))
-    
+
     # 計算每行字節數
     bytes_per_line = width // bit_depth
 
@@ -49,12 +65,13 @@ def image_to_c_array(image_path, output_file, width=200, height=200, bit_depth=8
     if len(byte_array) % bytes_per_line != 0:
         c_code += '\n'
     c_code += '};'
-    
+
     # 將 C 語言的程式碼輸出到文件
     with open(output_file, 'w') as file:
         file.write(c_code)
 
     print(f"C code generated and saved to {output_file}")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Convert an image to C array format")
@@ -68,4 +85,5 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    image_to_c_array(args.input_image, args.output_file, args.width, args.height, args.bit_depth, args.invert, args.rotate)
+    image_to_c_array(args.input_image, args.output_file, args.width, args.height, args.bit_depth, args.invert,
+                     args.rotate)
