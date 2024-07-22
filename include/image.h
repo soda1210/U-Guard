@@ -206,7 +206,9 @@ const unsigned char image_CHC[5000] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
 };
 
-const unsigned char battery_25[200] PROGMEM = {
+const unsigned char battery[4][200] PROGMEM = {
+// 25%
+{
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
@@ -247,9 +249,9 @@ const unsigned char battery_25[200] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
-};
-
-const unsigned char battery_50[200] PROGMEM = {
+},
+// 50%
+{
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
@@ -290,9 +292,9 @@ const unsigned char battery_50[200] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
-};
-
-const unsigned char battery_75[200] PROGMEM = {
+},
+// 75%
+{
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
@@ -333,9 +335,9 @@ const unsigned char battery_75[200] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
-};
-
-const unsigned char battery_100[200] PROGMEM = {
+},
+// 100%
+{
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
@@ -376,6 +378,7 @@ const unsigned char battery_100[200] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,
+}
 };
 
 const unsigned char big_bike[1352] PROGMEM = {
