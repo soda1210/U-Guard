@@ -3,8 +3,9 @@
 
 #include <Arduino.h>
 #include <SPI.h>
-#include <Display.h>
+#include <display.h>
 #include <image.h>
+#include <number.h>
 
 // IO setting
 int BUSY_Pin = 33;
@@ -62,6 +63,8 @@ void writeBlack(unsigned int x_start, unsigned int x_end,
                 unsigned int y_start2, unsigned int y_end2,
           const unsigned char *datas, unsigned int PART_COLUMN,unsigned int PART_LINE);
 
+void writeNumber(unsigned int x_start, unsigned int x_end, unsigned int number);
+
 struct Coordinates {
     unsigned int x_start;
     unsigned int x_end;
@@ -75,6 +78,8 @@ Coordinates transformXY(unsigned int x_start, unsigned int x_end,
                 unsigned int y_start1, unsigned int y_end1,
                 unsigned int y_start2, unsigned int y_end2,
                 unsigned int PART_COLUMN,unsigned int PART_LINE);
+
+void displayBikeMode(unsigned int inputNumber);
 
 void writeBlack(unsigned int x_start, unsigned int x_end,
           unsigned int y_start1, unsigned int y_end1,
@@ -150,8 +155,23 @@ void displayNumber(unsigned int x_startA, unsigned int y_startA, const unsigned 
   EPD_Part_Update();
 }
 
-void displayBikeMode(Bike *bike){
+void writeNumber(unsigned int x_start, unsigned int y_start, unsigned int inputNumber)
+{
   Coordinates tramXY;
+  unsigned int tens = inputNumber / 10;
+  unsigned int ones = inputNumber % 10;  
+  // 個位數
+  tramXY = transformXY(x_start, y_start, 64, 32);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1, tramXY.y_start2, tramXY.y_end2, number[ones], 64, 32);
+  // 十位數
+  tramXY = transformXY(x_start+32, y_start, 64, 32);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1, tramXY.y_start2, tramXY.y_end2, number[tens], 64, 32);
+
+}
+
+void displayBikeMode(unsigned int inputNumber){
+  Coordinates tramXY;
+  unsigned int column, line; 
 
   // Reset
   EPD_W21_RST_0; // Module reset
@@ -162,17 +182,48 @@ void displayBikeMode(Bike *bike){
   Epaper_Write_Command(0x3C); // BorderWavefrom
   Epaper_Write_Data(0x80);
 
-  // FIXME: import the image to prompt
+  // TODO: import image change to prompt
 
   // 電池
-  unsigned int column = 40;
-  unsigned int line = 40;
-  const unsigned char *datasB;
-  tramXY = transformXY(6, 153, column, line);
-  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1, tramXY.y_start2, tramXY.y_end2, datasA, column, line);
-  // 十位數
-  tramXY = transformXY(x_startB, y_startB, PART_COLUMN, PART_LINE);
-  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1, tramXY.y_start2, tramXY.y_end2, datasB, PART_COLUMN, PART_LINE);
+  column = 40;
+  line = 40;
+  tramXY = transformXY(6, 200, column, line);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
+   tramXY.y_start2, tramXY.y_end2, battery[3], column, line);
+
+  // 左上角鎖
+  column = 40;
+  line = 40;
+  tramXY = transformXY(160, 200, column, line);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
+   tramXY.y_start2, tramXY.y_end2, lock, column, line);
+
+  // 腳踏車
+  column = 104;
+  line = 104;
+  tramXY = transformXY(48, 136, column, line);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
+   tramXY.y_start2, tramXY.y_end2, big_bike, column, line);
+
+  // 右訊號
+  column = 48;
+  line = 48;
+  tramXY = transformXY(25, 150, column, line);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
+   tramXY.y_start2, tramXY.y_end2, right_single, column, line);
+
+  // 左訊號
+  column = 48;
+  line = 48;
+  tramXY = transformXY(127, 150, column, line);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
+   tramXY.y_start2, tramXY.y_end2, left_single, column, line);
+
+  // 數值顯示
+  writeNumber(68, 52, inputNumber);
+
+  // 更新畫面
+  EPD_Part_Update();
 }
 
 //////////////////////SPI///////////////////////////////////
