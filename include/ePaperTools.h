@@ -63,6 +63,9 @@ void writeBlack(unsigned int x_start, unsigned int x_end,
                 unsigned int y_start2, unsigned int y_end2,
           const unsigned char *datas, unsigned int PART_COLUMN,unsigned int PART_LINE);
 
+void writeImage(int x, int y, unsigned int column, unsigned int line, const unsigned char *image);
+// TODO: add function to display image
+
 void writeNumber(unsigned int x_start, unsigned int x_end, unsigned int number);
 
 struct Coordinates {
@@ -79,7 +82,35 @@ Coordinates transformXY(unsigned int x_start, unsigned int x_end,
                 unsigned int y_start2, unsigned int y_end2,
                 unsigned int PART_COLUMN,unsigned int PART_LINE);
 
+void displayWatchMode(unsigned int inputNumber);
+
+
 void displayBikeMode(unsigned int inputNumber);
+
+Coordinates transformXY(unsigned int x_start, unsigned int y_start,
+                unsigned int PART_COLUMN,unsigned int PART_LINE){
+  Coordinates result;
+  unsigned int x_end, y_start1, y_start2, y_end1, y_end2;
+  result.x_start = x_start / 8; // Convert to byte
+  result.x_end = result.x_start + PART_LINE / 8 - 1;
+
+  result.y_start1 = 0;
+  result.y_start2 = y_start - 1;
+  if (y_start >= 256)
+  {
+      result.y_start1 = result.y_start2 / 256;
+      result.y_start2 = result.y_start2 % 256;
+  }
+  result.y_end1 = 0;
+  result.y_end2 = y_start + PART_COLUMN - 1;
+  if (result.y_end2 >= 256)
+  {
+      result.y_end1 = result.y_end2 / 256;
+      result.y_end2 = result.y_end2 % 256;
+  }
+
+  return result;
+}
 
 void writeBlack(unsigned int x_start, unsigned int x_end,
           unsigned int y_start1, unsigned int y_end1,
@@ -108,29 +139,12 @@ void writeBlack(unsigned int x_start, unsigned int x_end,
   }
 }
 
-Coordinates transformXY(unsigned int x_start, unsigned int y_start,
-                unsigned int PART_COLUMN,unsigned int PART_LINE){
-  Coordinates result;
-  unsigned int x_end, y_start1, y_start2, y_end1, y_end2;
-  result.x_start = x_start / 8; // Convert to byte
-  result.x_end = result.x_start + PART_LINE / 8 - 1;
 
-  result.y_start1 = 0;
-  result.y_start2 = y_start - 1;
-  if (y_start >= 256)
-  {
-      result.y_start1 = result.y_start2 / 256;
-      result.y_start2 = result.y_start2 % 256;
-  }
-  result.y_end1 = 0;
-  result.y_end2 = y_start + PART_COLUMN - 1;
-  if (result.y_end2 >= 256)
-  {
-      result.y_end1 = result.y_end2 / 256;
-      result.y_end2 = result.y_end2 % 256;
-  }
-
-  return result;
+void writeImage(int x, int y, unsigned int column, unsigned int line, const unsigned char *image)
+{
+  Coordinates tramXY = transformXY(x, y, column, line);
+  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
+              tramXY.y_start2, tramXY.y_end2, image, column, line);
 }
 
 void displayNumber(unsigned int x_startA, unsigned int y_startA, const unsigned char *datasA,
@@ -169,7 +183,7 @@ void writeNumber(unsigned int x_start, unsigned int y_start, unsigned int inputN
 
 }
 
-void displayBikeMode(unsigned int inputNumber){
+void displayWatchMode(unsigned int inputNumber){
   Coordinates tramXY;
   unsigned int column, line; 
 
@@ -183,42 +197,17 @@ void displayBikeMode(unsigned int inputNumber){
   Epaper_Write_Data(0x80);
 
   // TODO: import image change to prompt
-
+  
   // 電池
-  column = 40;
-  line = 40;
-  tramXY = transformXY(6, 200, column, line);
-  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
-   tramXY.y_start2, tramXY.y_end2, battery[3], column, line);
-
+  writeImage(6, 200, 40, 40, watch_battery[0]);
   // 左上角鎖
-  column = 40;
-  line = 40;
-  tramXY = transformXY(160, 200, column, line);
-  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
-   tramXY.y_start2, tramXY.y_end2, lock, column, line);
-
-  // 腳踏車
-  column = 104;
-  line = 104;
-  tramXY = transformXY(48, 136, column, line);
-  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
-   tramXY.y_start2, tramXY.y_end2, big_bike, column, line);
-
+  writeImage(160, 200, 40, 40, lock);
+  // 腳踏車 Bibi
+  writeImage(48, 136, 104, 104, big_bike);
   // 右訊號
-  column = 48;
-  line = 48;
-  tramXY = transformXY(25, 150, column, line);
-  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
-   tramXY.y_start2, tramXY.y_end2, right_single, column, line);
-
+  writeImage(25, 150, 48, 48, right_single);
   // 左訊號
-  column = 48;
-  line = 48;
-  tramXY = transformXY(127, 150, column, line);
-  writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
-   tramXY.y_start2, tramXY.y_end2, left_single, column, line);
-
+  writeImage(135, 150, 48, 48, left_single);
   // 數值顯示
   writeNumber(68, 52, inputNumber);
 
@@ -226,6 +215,9 @@ void displayBikeMode(unsigned int inputNumber){
   EPD_Part_Update();
 }
 
+void displayBikeMode(unsigned int inputNumber){
+  ;
+}
 //////////////////////SPI///////////////////////////////////
 
 void SPI_Write(unsigned char value)
