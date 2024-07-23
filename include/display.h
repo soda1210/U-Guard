@@ -37,20 +37,10 @@ void init_screen(){
   EPD_SetRAMValue_BaseMap(white);
 }
 
-
 void reflashing_screen(Bike *bike){
-    // TODO: Get the info from the bike
     unsigned int speed_int = (int)bike->speed; // 取整數部分
 
-    // int tens = (speed_int / 10) % 10; // 取十位數
-    // int ones = speed_int % 10;        // 取個位數
-    // displayNumber(64, 122, number[ones], 96, 122, number[tens], 64, 32);
-
-    displayBikeMode(speed_int);
-    delay(200);
-
-    // EPD_Dis_Part(3, 196, battery[0], 40, 40);
-    // delay(100);
+    displayWatchMode(speed_int);    
 }
 
 #endif // DISPLAY_H
