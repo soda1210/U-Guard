@@ -26,6 +26,19 @@
 Bike bike;
 BikeMode bikeMode;
 
+void testDisplayBibi(){
+  unsigned char fen_L, fen_H, miao_L, miao_H;
+  for (miao_H = 0; miao_H < 10; miao_H++)
+  {
+    for (miao_L = 0; miao_L < 10; miao_L++)
+    {
+      bike.speed = 10 * miao_H + miao_L;
+      reflashing_screen(&bike);
+      delay(200);
+    }
+  }
+}
+
 void setup()
 {
   Serial.begin(9600);
@@ -46,14 +59,6 @@ void setup()
 
 void loop()
 {
-  unsigned char fen_L, fen_H, miao_L, miao_H;
-  for (miao_H = 0; miao_H < 10; miao_H++)
-  {
-    for (miao_L = 0; miao_L < 10; miao_L++)
-    {
-      bike.speed = 10 * miao_H + miao_L;
-      reflashing_screen(&bike);
-      delay(100);
-    }
-  }
+  testDisplayBibi();
+
 }
