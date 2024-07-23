@@ -184,9 +184,6 @@ void writeNumber(unsigned int x_start, unsigned int y_start, unsigned int inputN
 }
 
 void displayWatchMode(unsigned int inputNumber){
-  Coordinates tramXY;
-  unsigned int column, line; 
-
   // Reset
   EPD_W21_RST_0; // Module reset
   delay(10);     // At least 10ms delay
@@ -197,20 +194,41 @@ void displayWatchMode(unsigned int inputNumber){
   Epaper_Write_Data(0x80);
 
   // TODO: import image change to prompt
-  
-  // 電池
-  writeImage(6, 200, 40, 40, watch_battery[0]);
   // 左上角鎖
-  writeImage(160, 200, 40, 40, lock);
-  // 腳踏車 Bibi
-  writeImage(48, 136, 104, 104, big_bike);
-  // 右訊號
-  writeImage(25, 150, 48, 48, right_single);
-  // 左訊號
-  writeImage(135, 150, 48, 48, left_single);
-  // 數值顯示
-  writeNumber(68, 52, inputNumber);
+  if (false){
+    writeImage(160, 200, 40, 40, lock);
+  }else{
+    writeImage(160, 200, 40, 40, unlock);
+  }
 
+  if (true){
+    // 電池
+    writeImage(6, 200, 40, 40, watch_battery[0]);
+    // 電力警告
+    writeImage(46, 192, 24, 24, watch_battery_warning);
+  }
+
+  if (false){
+    // 腳踏車 Bibi
+    writeImage(48, 136, 104, 104, big_bike);
+    // 右訊號
+    writeImage(25, 150, 48, 48, right_single);
+    // 左訊號
+    writeImage(135, 150, 48, 48, left_single);
+  }
+
+  if (false){
+    // 尋車
+    writeImage(32, 151, 104, 136, distance);
+    // 距離單位
+    writeImage(50, 30, 40, 24, m);
+    // 數值顯示
+    writeNumber(80, 52, inputNumber);
+  }else{
+    // 無訊號
+    writeImage(24, 151, 152, 152, no_Wifi);
+  }
+  
   // 更新畫面
   EPD_Part_Update();
 }
