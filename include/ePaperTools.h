@@ -140,11 +140,11 @@ void writeBlack(unsigned int x_start, unsigned int x_end,
 }
 
 
-void writeImage(int x, int y, unsigned int column, unsigned int line, const unsigned char *image)
+void writeImage(int x, int y, unsigned int height, unsigned int width, const unsigned char *image)
 {
-  Coordinates tramXY = transformXY(x, y, column, line);
+  Coordinates tramXY = transformXY(x, y, height, width);
   writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1,
-              tramXY.y_start2, tramXY.y_end2, image, column, line);
+              tramXY.y_start2, tramXY.y_end2, image, height, width);
 }
 
 void displayNumber(unsigned int x_startA, unsigned int y_startA, const unsigned char *datasA,
@@ -217,7 +217,7 @@ void displayWatchMode(unsigned int inputNumber){
     writeImage(135, 150, 48, 48, left_single);
   }
 
-  if (false){
+  if (true){
     // 尋車
     writeImage(32, 151, 104, 136, distance);
     // 距離單位
@@ -234,7 +234,45 @@ void displayWatchMode(unsigned int inputNumber){
 }
 
 void displayBikeMode(unsigned int inputNumber){
-  ;
+  // Reset
+  EPD_W21_RST_0; // Module reset
+  delay(10);     // At least 10ms delay
+  EPD_W21_RST_1;
+  delay(10); // At least 10ms delay
+
+  Epaper_Write_Command(0x3C); // BorderWavefrom
+  Epaper_Write_Data(0x80);
+
+  // TODO: import image change to prompt
+  // 左上腳踏車
+  writeImage(152, 207, 48, 48, small_bike);
+
+  if (true){
+    // 電池
+    writeImage(50, 35, 32, 152, bike_battery[0]);
+    // 電力警告
+    writeImage(8, 35, 32, 32, bike_battery_warning);
+  }
+
+  if (false){
+    // 自動輔助力模式
+    writeImage(20, 160, 48, 48, assist_mode_auto);
+  }else{
+    // 正常輔助力模式
+    writeImage(20, 160, 48, 48, assist_mode_normal);
+  }
+
+  if (true){
+    // 速度icon
+    writeImage(108, 145, 80, 80, speed_icon[4]);
+  }
+  // 距離單位
+  writeImage(22, 75, 24, 48, km_h);
+  // 數值顯示
+  writeNumber(70, 115, inputNumber);
+  
+  // 更新畫面
+  EPD_Part_Update();
 }
 //////////////////////SPI///////////////////////////////////
 
