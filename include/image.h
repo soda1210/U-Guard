@@ -1456,7 +1456,7 @@ const unsigned char bike_battery[5][608] PROGMEM = {
 };
 
 // 車錶 自行車電力警告
-const unsigned char bigwarn[128] PROGMEM = {
+const unsigned char bike_battery_warning[128] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFE,0X7F,0XFF,
@@ -1492,7 +1492,7 @@ const unsigned char bigwarn[128] PROGMEM = {
 };
 
 // 車錶 自動模式
-const unsigned char A[288] PROGMEM = {
+const unsigned char assist_mode_auto[288] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XF8,0X1F,0XFF,0XFF,
@@ -1544,7 +1544,7 @@ const unsigned char A[288] PROGMEM = {
 };
 
 // 車錶 正常模式
-const unsigned char N[288] PROGMEM = {
+const unsigned char assist_mode_normal[288] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XF8,0X1F,0XFF,0XFF,
@@ -1596,7 +1596,7 @@ const unsigned char N[288] PROGMEM = {
 };
 
 // 車錶 速度單位
-const unsigned char h[144] PROGMEM = {
+const unsigned char km_h[144] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XC6,0X7F,0XFF,0XFF,0X9F,
     0XFF,0XC4,0X7F,0XFF,0XFF,0X9F,
@@ -1624,7 +1624,7 @@ const unsigned char h[144] PROGMEM = {
 };
 
 // 車錶 速度圖示
-const unsigned char speedIcon[5][800] PROGMEM = {
+const unsigned char speed_icon[5][800] PROGMEM = {
     // 1
     {
         0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
