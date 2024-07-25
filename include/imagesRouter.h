@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+// 數字
+#include "images/number.h"
 // 白畫面
 #include "images/white.h"
 // CHC 圖有部分異常
