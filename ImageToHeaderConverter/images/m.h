@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 const unsigned char m[120] PROGMEM = {
     0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,

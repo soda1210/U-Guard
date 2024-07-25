@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 const unsigned char WatchBattery_50[200] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,

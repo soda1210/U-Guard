@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 const unsigned char speed_icon1[800] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,

@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 const unsigned char unlock[200] PROGMEM = {
     0XFF,0XE0,0X00,0X00,0X03,
     0XFF,0XC0,0X00,0X00,0X01,

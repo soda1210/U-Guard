@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 const unsigned char bike_battery_warning[128] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,

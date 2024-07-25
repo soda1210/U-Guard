@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 const unsigned char small_bike[288] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,

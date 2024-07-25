@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 const unsigned char number_8[256] PROGMEM = {
     0X00,0X00,0X00,0X00,
     0X00,0X00,0X00,0X00,
