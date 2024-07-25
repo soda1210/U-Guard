@@ -1,11 +1,9 @@
-
 // FIXME: This include after the defines
 #include <Arduino.h>
 #include <SPI.h>
 #include <display.h>
 #include <ePaperTools.h>
 #include <example.h>
-
 
 #define EPD_W21_CS_0 digitalWrite(CS_Pin, LOW)
 #define EPD_W21_CS_1 digitalWrite(CS_Pin, HIGH)
@@ -27,12 +25,12 @@ Bike bike;
 BikeMode bikeMode;
 
 void testDisplayBibi(){
-  unsigned char fen_L, fen_H, miao_L, miao_H;
-  for (miao_H = 0; miao_H < 10; miao_H++)
+  unsigned char onesValue, tensValue;
+  for (tensValue = 0; tensValue < 10; tensValue++)
   {
-    for (miao_L = 0; miao_L < 10; miao_L++)
+    for (onesValue = 0; onesValue < 10; onesValue++)
     {
-      bike.speed = 10 * miao_H + miao_L;
+      bike.speed = 10 * tensValue + onesValue;
       reflashing_screen(&bike);
       delay(200);
     }
