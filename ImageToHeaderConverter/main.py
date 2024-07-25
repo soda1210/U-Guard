@@ -58,7 +58,8 @@ def image_to_c_array(image_path, output_file, width=200, height=200, bit_depth=8
     var_name = os.path.splitext(os.path.basename(output_file))[0]
 
     # 轉換為 C 語言的程式碼格式，每行以 bytes_per_line 進行換行
-    c_code = f'const unsigned char {var_name}[{len(byte_array)}] PROGMEM = {{\n'
+    c_code = f'#include <Arduino.h>\n\n'
+    c_code += f'const unsigned char {var_name}[{len(byte_array)}] PROGMEM = {{\n'
     for i, byte in enumerate(byte_array):
         if i % bytes_per_line == 0:
             c_code += '    '
