@@ -226,7 +226,7 @@ void displayWatchMode(unsigned int inputNumber){
     writeNumber(80, 52, inputNumber);
   }else{
     // 無訊號
-    writeImage(24, 151, 152, 152, no_Wifi);
+    writeImage(24, 151, 152, 152, no_signal);
   }
   
   // 更新畫面
