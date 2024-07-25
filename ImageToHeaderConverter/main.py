@@ -3,7 +3,7 @@ import numpy as np
 import argparse
 import os
 
-def image_to_c_array(image_path, output_file, width=200, height=200, bit_depth=8, invert=False, rotate=False, flip_vertical=False):
+def image_to_c_array(image_path, output_file, width=200, height=200, bit_depth=8, invert=False, rotate=False, flip_vertical=False, flip_horizontal=False):
     # 讀取圖片（包含 Alpha 通道）
     image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
 
@@ -22,7 +22,8 @@ def image_to_c_array(image_path, output_file, width=200, height=200, bit_depth=8
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # 進行左右鏡像
-    image = cv2.flip(image, 1)
+    if flip_horizontal:
+        image = cv2.flip(image, 1)
 
     # 上下反轉
     if flip_vertical:
@@ -85,8 +86,9 @@ if __name__ == "__main__":
     parser.add_argument('--bit_depth', type=int, default=8, help="Bit depth per pixel")
     parser.add_argument('--invert', action='store_true', help="Invert black and white colors")
     parser.add_argument('--rotate', action='store_true', help="-90 degrees rotate")
+    parser.add_argument('--flip_horizontal', action='store_true', help="Flip the image horizontally")
     parser.add_argument('--flip_vertical', action='store_true', help="Flip the image vertically")
 
     args = parser.parse_args()
 
-    image_to_c_array(args.input_image, args.output_file, args.width, args.height, args.bit_depth, args.invert, args.rotate, args.flip_vertical)
+    image_to_c_array(args.input_image, args.output_file, args.width, args.height, args.bit_depth, args.invert, args.rotate, args.flip_vertical, args.flip_horizontal)
