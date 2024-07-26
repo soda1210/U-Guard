@@ -174,10 +174,10 @@ void writeNumber(unsigned int x_start, unsigned int y_start, unsigned int inputN
   unsigned int tens = inputNumber / 10;
   unsigned int ones = inputNumber % 10;  
   // 個位數
-  tramXY = transformXY(x_start, y_start, 64, 32);
+  tramXY = transformXY(x_start+32, y_start, 64, 32);
   writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1, tramXY.y_start2, tramXY.y_end2, number[ones], 64, 32);
   // 十位數
-  tramXY = transformXY(x_start+32, y_start, 64, 32);
+  tramXY = transformXY(x_start, y_start, 64, 32);
   writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1, tramXY.y_start2, tramXY.y_end2, number[tens], 64, 32);
 
 }
