@@ -4,8 +4,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <display.h>
-#include <image.h>
-#include <number.h>
+#include <imagesRouter.h>
 
 // IO setting
 int BUSY_Pin = 33;

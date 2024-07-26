@@ -2,8 +2,6 @@
 #define DISPLAY_H
 
 #include <ePaperTools.h>
-#include <image.h>
-#include <number.h>
 
 typedef unsigned char uint8_t;
 typedef unsigned short int uint16_t;
