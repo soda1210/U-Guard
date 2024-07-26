@@ -8,7 +8,7 @@ const unsigned char watch_battery_warning[72] PROGMEM = {
     0X3F,0XFF,0XFC,
     0X9F,0XE7,0XF9,
     0X9F,0XE7,0XF9,
-    0XCF,0XEF,0XF3,
+    0XCF,0XF7,0XF3,
     0XEF,0XFF,0XF7,
     0XE7,0XE7,0XE7,
     0XE3,0XE7,0XC7,
