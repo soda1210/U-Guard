@@ -24,7 +24,7 @@
 Bike bike;
 BikeMode bikeMode;
 
-void testDisplayBibi(){
+void testDisplay(){
   unsigned char onesValue, tensValue;
   for (tensValue = 0; tensValue < 10; tensValue++)
   {
@@ -57,6 +57,6 @@ void setup()
 
 void loop()
 {
-  testDisplayBibi();
+  testDisplay();
 
 }
