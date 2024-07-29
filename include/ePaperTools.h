@@ -4,7 +4,6 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-#include "imagesRouter.h"
 #include "pinSetting.h"
 
 // EPD
