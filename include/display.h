@@ -1,10 +1,7 @@
 #ifndef _DISPLAY_H
 #define _DISPLAY_H
 
-#include <ePaperTools.h>
-
-typedef unsigned char uint8_t;
-typedef unsigned short int uint16_t;
+#include "pages.h"
 
 // Mode of the bike
 typedef enum
