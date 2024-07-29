@@ -145,31 +145,31 @@ void displayWatchMode(unsigned int inputNumber)
   writeReset();
 
   // 左上角鎖
-  if (false)
+  if (true)
   {
-    writeImage(160, 200, 40, 40, lock);
+    writeImage(0, 40, 40, 40, lock);
   }
   else
   {
-    writeImage(160, 200, 40, 40, unlock);
+    writeImage(0, 40, 40, 40, unlock);
   }
 
   if (true)
   {
     // 電池
-    writeImage(6, 200, 40, 40, watch_battery[0]);
+    writeImage(160, 40, 40, 40, watch_battery[0]);
     // 電力警告
-    writeImage(46, 192, 24, 24, watch_battery_warning);
+    writeImage(136, 32, 24, 24, watch_battery_warning);
   }
 
   if (false)
   {
     // 腳踏車 Bibi
-    writeImage(48, 136, 104, 104, big_bike);
-    // 右訊號
-    writeImage(25, 150, 48, 48, right_single);
+    writeImage(48, 176, 104, 104, big_bike);
     // 左訊號
-    writeImage(135, 150, 48, 48, left_single);
+    writeImage(135, 112, 48, 48, right_single);
+    // 右訊號
+    writeImage(25, 112, 48, 48, left_single);
   }
 
   if (true)
@@ -177,14 +177,14 @@ void displayWatchMode(unsigned int inputNumber)
     // 尋車
     writeImage(32, 151, 104, 136, distance);
     // 距離單位
-    writeImage(50, 30, 40, 24, m);
+    writeImage(135, 200, 40, 24, m);
     // 數值顯示
-    writeNumber(80, 52, inputNumber);
+    writeNumber(60, 210, inputNumber);
   }
   else
   {
     // 無訊號
-    writeImage(24, 151, 152, 152, no_signal);
+    writeImage(24, 191, 152, 152, no_signal);
   }
 
   // 更新畫面
@@ -195,36 +195,36 @@ void displayBikeMode(unsigned int inputNumber)
 {
   writeReset();
   // 左上腳踏車
-  writeImage(152, 207, 48, 48, small_bike);
+  writeImage(0, 40, 48, 48, small_bike);
 
   if (true)
   {
     // 電池
-    writeImage(50, 35, 32, 152, bike_battery[0]);
+    writeImage(0, 200, 32, 152, bike_battery[0]);
     // 電力警告
-    writeImage(8, 35, 32, 32, bike_battery_warning);
+    writeImage(160, 200, 32, 32, bike_battery_warning);
   }
 
   if (false)
   {
     // 自動輔助力模式
-    writeImage(20, 160, 48, 48, assist_mode_auto);
+    writeImage(140, 100, 48, 48, assist_mode_auto);
   }
   else
   {
     // 正常輔助力模式
-    writeImage(20, 160, 48, 48, assist_mode_normal);
+    writeImage(140, 100, 48, 48, assist_mode_normal);
   }
 
   if (true)
   {
     // 速度icon
-    writeImage(108, 145, 80, 80, speed_icon[4]);
+    writeImage(12, 140, 80, 80, speed_icon[4]);
   }
   // 距離單位
-  writeImage(22, 75, 24, 48, km_h);
+  writeImage(130, 150, 24, 48, km_h);
   // 數值顯示
-  writeNumber(70, 115, inputNumber);
+  writeNumber(65, 155, inputNumber);
 
   // 更新畫面
   EPD_Part_Update();
