@@ -1,9 +1,6 @@
 // FIXME: This include after the defines
 #include <Arduino.h>
-#include <SPI.h>
 #include <display.h>
-#include <ePaperTools.h>
-#include <example.h>
 
 #define EPD_W21_CS_0 digitalWrite(CS_Pin, LOW)
 #define EPD_W21_CS_1 digitalWrite(CS_Pin, HIGH)
