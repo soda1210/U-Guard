@@ -6,15 +6,10 @@ Bike bike;
 BikeMode bikeMode;
 
 void testDisplay(){
-  unsigned char onesValue, tensValue;
-  for (tensValue = 0; tensValue < 10; tensValue++)
-  {
-    for (onesValue = 0; onesValue < 10; onesValue++)
-    {
-      bike.speed = 10 * tensValue + onesValue;
-      reflashing_screen(&bike);
-      delay(200);
-    }
+  for (int testValue = 0; testValue < 100; testValue++){
+    bike.speed = testValue;
+    reflashing_screen(&bike);
+    delay(1000);
   }
 }
 
