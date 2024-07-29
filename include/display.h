@@ -1,10 +1,7 @@
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#ifndef _DISPLAY_H
+#define _DISPLAY_H
 
-#include <ePaperTools.h>
-
-typedef unsigned char uint8_t;
-typedef unsigned short int uint16_t;
+#include "pages.h"
 
 // Mode of the bike
 typedef enum
@@ -36,7 +33,7 @@ void init_screen(){
 }
 
 void reflashing_screen(Bike *bike){
-    unsigned int speed_int = (int)bike->speed; // 取整數部分
+    unsigned int speed_int = (int)bike->speed;
     if (false){
         displayBikeMode(speed_int);
     }else{
