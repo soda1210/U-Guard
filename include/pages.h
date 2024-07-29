@@ -20,6 +20,8 @@ Coordinates transformXY(unsigned int x_start, unsigned int x_end,
                         unsigned int y_start2, unsigned int y_end2,
                         unsigned int PART_COLUMN, unsigned int PART_LINE);
 
+void writeReset();
+
 void writeBlack(unsigned int x_start, unsigned int x_end,
                 unsigned int y_start1, unsigned int y_end1,
                 unsigned int y_start2, unsigned int y_end2,
@@ -65,6 +67,17 @@ Coordinates transformXY(unsigned int x_start, unsigned int y_start,
   return result;
 }
 
+void writeReset()
+{
+  // Reset
+  EPD_W21_RST_0; // Module reset
+  delay(10);     // At least 10ms delay
+  EPD_W21_RST_1;
+  delay(10); // At least 10ms delay
+
+  Epaper_Write_Command(0x3C); // BorderWavefrom
+  Epaper_Write_Data(0x80);
+}
 
 void writeBlack(unsigned int x_start, unsigned int x_end,
                 unsigned int y_start1, unsigned int y_end1,
@@ -117,15 +130,7 @@ void displayNumber(unsigned int x_startA, unsigned int y_startA, const unsigned 
                    unsigned int x_startB, unsigned int y_startB, const unsigned char *datasB,
                    unsigned int PART_COLUMN, unsigned int PART_LINE)
 {
-  // Reset
-  EPD_W21_RST_0; // Module reset
-  delay(10);     // At least 10ms delay
-  EPD_W21_RST_1;
-  delay(10); // At least 10ms delay
-
-  Epaper_Write_Command(0x3C); // BorderWavefrom
-  Epaper_Write_Data(0x80);
-
+  writeReset();
   // 個位數
   Coordinates tramXY = transformXY(x_startA, y_startA, PART_COLUMN, PART_LINE);
   writeBlack(tramXY.x_start, tramXY.x_end, tramXY.y_start1, tramXY.y_end1, tramXY.y_start2, tramXY.y_end2, datasA, PART_COLUMN, PART_LINE);
@@ -137,16 +142,8 @@ void displayNumber(unsigned int x_startA, unsigned int y_startA, const unsigned 
 
 void displayWatchMode(unsigned int inputNumber)
 {
-  // Reset
-  EPD_W21_RST_0; // Module reset
-  delay(10);     // At least 10ms delay
-  EPD_W21_RST_1;
-  delay(10); // At least 10ms delay
+  writeReset();
 
-  Epaper_Write_Command(0x3C); // BorderWavefrom
-  Epaper_Write_Data(0x80);
-
-  // TODO: import image change to prompt
   // 左上角鎖
   if (false)
   {
@@ -196,16 +193,7 @@ void displayWatchMode(unsigned int inputNumber)
 
 void displayBikeMode(unsigned int inputNumber)
 {
-  // Reset
-  EPD_W21_RST_0; // Module reset
-  delay(10);     // At least 10ms delay
-  EPD_W21_RST_1;
-  delay(10); // At least 10ms delay
-
-  Epaper_Write_Command(0x3C); // BorderWavefrom
-  Epaper_Write_Data(0x80);
-
-  // TODO: import image change to prompt
+  writeReset();
   // 左上腳踏車
   writeImage(152, 207, 48, 48, small_bike);
 
