@@ -33,7 +33,7 @@ void init_screen(){
 }
 
 void reflashing_screen(Bike *bike){
-    unsigned int speed_int = (int)bike->speed; // 取整數部分
+    unsigned int speed_int = (int)bike->speed;
     if (false){
         displayBikeMode(speed_int);
     }else{

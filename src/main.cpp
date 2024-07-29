@@ -39,5 +39,4 @@ void setup()
 void loop()
 {
   testDisplay();
-
 }
