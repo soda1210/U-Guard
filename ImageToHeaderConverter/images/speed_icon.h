@@ -7,7 +7,7 @@
 #include "../speedIcon/speed_icon4.h"
 #include "../speedIcon/speed_icon5.h"
 
-const unsigned char speed_icon[5][800] PROGMEM = {
+const unsigned char image_speed_icon[5][800] PROGMEM = {
     (const unsigned char)speed_icon1,
     (const unsigned char)speed_icon2,
     (const unsigned char)speed_icon3,

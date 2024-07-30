@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-const unsigned char m[120] PROGMEM = {
+const unsigned char image_m[120] PROGMEM = {
     0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,
     0XEF,0XF7,0XF7,

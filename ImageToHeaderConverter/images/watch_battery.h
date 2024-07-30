@@ -5,7 +5,7 @@
 #include "../watchBattery/WatchBattery_75.h"
 #include "../watchBattery/WatchBattery_100.h"
 
-const unsigned char watch_battery[4][200] PROGMEM = {
+const unsigned char image_watch_battery[4][200] PROGMEM = {
     (const unsigned char)WatchBattery_25,
     (const unsigned char)WatchBattery_50,
     (const unsigned char)WatchBattery_75,

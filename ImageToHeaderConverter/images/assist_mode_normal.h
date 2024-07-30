@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-const unsigned char assist_mode_normal[288] PROGMEM = {
+const unsigned char image_assist_mode_normal[288] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XF0,0X0F,0XFF,0XFF,

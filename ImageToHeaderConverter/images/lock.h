@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-const unsigned char lock[200] PROGMEM = {
+const unsigned char image_lock[200] PROGMEM = {
     0XFE,0X00,0X00,0X00,0X7F,
     0XFC,0X00,0X00,0X00,0X3F,
     0XF8,0X00,0X00,0X00,0X1F,

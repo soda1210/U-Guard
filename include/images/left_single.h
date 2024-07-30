@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-const unsigned char left_single[288] PROGMEM = {
+const unsigned char image_left_single[288] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,

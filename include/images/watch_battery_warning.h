@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-const unsigned char watch_battery_warning[72] PROGMEM = {
+const unsigned char image_watch_battery_warning[72] PROGMEM = {
     0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,
     0X80,0X00,0X01,

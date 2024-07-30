@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-const unsigned char km_h[144] PROGMEM = {
+const unsigned char image_km_h[144] PROGMEM = {
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
     0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,

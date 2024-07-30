@@ -6,7 +6,7 @@
 #include "bikeBattery/BikeBattery_80.h"
 #include "bikeBattery/BikeBattery_100.h"
 
-const unsigned char* bike_battery[5] PROGMEM = {
+const unsigned char* image_bike_battery[5] PROGMEM = {
     BikeBattery_20,
     BikeBattery_40,
     BikeBattery_60,
