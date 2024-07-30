@@ -35,10 +35,11 @@ void displayNumber(unsigned int x_startA, unsigned int y_startA, const unsigned 
                    unsigned int x_startB, unsigned int y_startB, const unsigned char *datasB,
                    unsigned int PART_COLUMN, unsigned int PART_LINE);
 
-void displayWatchMode(unsigned int inputNumber);
+void displayWatchMode(bool isLock, bool buzzer, unsigned int distance, uint8_t battery);
 
-void displayBikeMode(unsigned int inputNumber);
+void displayBikeMode(bool autoAssist, bool buzzer, unsigned int speed, uint8_t battery, uint8_t assist);
 
+void displayWhite();
 // Function
 
 Coordinates transformXY(unsigned int x_start, unsigned int y_start,
@@ -140,36 +141,28 @@ void displayNumber(unsigned int x_startA, unsigned int y_startA, const unsigned 
   EPD_Part_Update();
 }
 
-void displayWatchMode(unsigned int inputNumber, bool isLock)
+void displayWatchMode(bool isLock, bool buzzer, unsigned int distance, uint8_t battery)
 {
   writeReset();
 
   // 左上角鎖
-  if (isLock)
-  {
-    writeImage(0, 40, 40, 40, image_lock);
-  }
-  else
-  {
-    writeImage(0, 40, 40, 40, image_unlock);
-  }
+  const unsigned char *imageLock = (isLock) ? image_lock : image_unlock;
+  writeImage(0, 40, 40, 40, imageLock);
 
-  if (true)
-  {
-    // 電池
-    writeImage(160, 40, 40, 40, image_watch_battery[0]);
-    // 電力警告
-    writeImage(136, 32, 24, 24, image_watch_battery_warning);
-  }
+  // 電池
+  unsigned int remainingBattery = (battery == 100) ? 3 : battery / 25;
+  const unsigned char *imageRemainingBattery = image_watch_battery[remainingBattery];
+  const unsigned char *imageBatteryWarning = (remainingBattery == 0) ? image_watch_battery_warning : image_white;
+  writeImage(160, 40, 40, 40, imageRemainingBattery);
+  writeImage(136, 32, 24, 24, imageBatteryWarning);
 
-  if (false)
+  if (buzzer)
   {
     // 腳踏車 Bibi
     writeImage(48, 176, 104, 104, image_big_bike);
-    // 左訊號
     writeImage(135, 112, 48, 48, image_right_single);
-    // 右訊號
     writeImage(25, 112, 48, 48, image_left_single);
+    return;
   }
 
   if (true)
@@ -179,7 +172,7 @@ void displayWatchMode(unsigned int inputNumber, bool isLock)
     // 距離單位
     writeImage(135, 200, 40, 24, image_m);
     // 數值顯示
-    writeNumber(60, 210, inputNumber);
+    writeNumber(60, 210, distance);
   }
   else
   {
@@ -191,44 +184,42 @@ void displayWatchMode(unsigned int inputNumber, bool isLock)
   EPD_Part_Update();
 }
 
-void displayBikeMode(unsigned int inputNumber)
+void displayBikeMode(bool autoAssist, bool buzzer, unsigned int speed, uint8_t battery, uint8_t assist)
 {
   writeReset();
   // 左上腳踏車
   writeImage(0, 40, 48, 48, small_bike);
 
-  if (true)
-  {
-    // 電池
-    writeImage(0, 200, 32, 152, image_bike_battery[0]);
-    // 電力警告
-    writeImage(160, 200, 32, 32, image_bike_battery_warning);
-  }
+  // 電池
+  unsigned int remainingBattery = (battery == 100) ? 4 : battery / 20;
+  const unsigned char *imageRemainingBattery = image_bike_battery[remainingBattery];
+  const unsigned char *imageBatteryWarning = (remainingBattery == 0) ? image_bike_battery_warning : image_white;
+  writeImage(0, 200, 32, 152, imageRemainingBattery);
+  writeImage(160, 200, 32, 32, imageBatteryWarning);
 
-  if (false)
-  {
-    // 自動輔助力模式
-    writeImage(140, 100, 48, 48, image_assist_mode_auto);
-  }
-  else
-  {
-    // 正常輔助力模式
-    writeImage(140, 100, 48, 48, image_assist_mode_normal);
-  }
+  const unsigned char *imageAssistMode = (autoAssist) ? image_assist_mode_auto : image_assist_mode_normal;
+  writeImage(140, 100, 48, 48, imageAssistMode);
 
-  if (true)
-  {
-    // 速度icon
-    writeImage(12, 140, 80, 80, image_speed_icon[4]);
-  }
-  // 距離單位
-  writeImage(130, 150, 24, 48, image_km_h);
+  unsigned int assistIndex = (assist == 0) ? 0 : assist - 1;
+  const unsigned char *imageSpeedIcon = image_speed_icon[assistIndex];
+  writeImage(12, 140, 80, 80, imageSpeedIcon);
+
   // 數值顯示
-  writeNumber(65, 155, inputNumber);
+  writeNumber(65, 155, speed);
+  // 速度單位
+  writeImage(130, 150, 24, 48, image_km_h);
 
   // 更新畫面
   EPD_Part_Update();
 }
 
+void displayWhite()
+{
+  writeReset();
+  // 白畫面
+  writeImage(0, 0, 200, 200, image_white);
+  // 更新畫面
+  EPD_Part_Update();
+}
 
 #endif // _PAGES_H
