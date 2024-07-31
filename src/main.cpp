@@ -41,8 +41,17 @@ void setup()
   SPI.begin();
   // Display
   bikeMode = MODE_BIKE;
-  // Bike {speed, torque, cadence, distance, errorCode, battery, assist, mode}
-  bike = {true, false, true, 0, 0, 0, 0, 88, 0, 0, bikeMode};
+  bike = {.isLock = true,
+        .buzzer = false,
+        .assistMode = true,
+        .speed = 0.0,
+        .torque = 0.0,
+        .cadence = 0,
+        .errorCode = 0,
+        .distance = 88,
+        .battery = 0,
+        .assist = 0,
+        .mode = bikeMode};
   Serial.println("Start!");
   init_screen();
   delay(2000);
