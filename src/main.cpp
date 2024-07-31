@@ -10,9 +10,11 @@ void testDisplay()
   for (int testValue = 0; testValue < 10; testValue++)
   {
     bike.speed = testValue;
-    bike.battery = testValue * 10;
+    bike.battery = 100 - testValue * 10;
+    bike.assist = (testValue+1)/2;
+    bike.assistMode = testValue % 2;
     reflashing_screen(&bike);
-    delay(500);
+    delay(200);
   }
   bike.mode = MODE_KEY;
   init_screen();
@@ -20,9 +22,10 @@ void testDisplay()
   for (int testValue = 0; testValue < 10; testValue++)
   {
     bike.speed = testValue;
-    bike.battery = testValue * 10;
+    bike.isLock = testValue % 2;
+    bike.battery = 100 - testValue * 10;
     reflashing_screen(&bike);
-    delay(500);
+    delay(200);
   }
   bike.mode = MODE_BIKE;
   init_screen();
@@ -41,8 +44,17 @@ void setup()
   SPI.begin();
   // Display
   bikeMode = MODE_BIKE;
-  // Bike {speed, torque, cadence, distance, errorCode, battery, assist, mode}
-  bike = {true, false, true, 0, 0, 0, 0, 88, 0, 0, bikeMode};
+  bike = {.isLock = true,
+          .buzzer = false,
+          .assistMode = true,
+          .speed = 0.0,
+          .torque = 0.0,
+          .cadence = 0,
+          .errorCode = 0,
+          .distance = 88,
+          .battery = 0,
+          .assist = 0,
+          .mode = bikeMode};
   Serial.println("Start!");
   init_screen();
   delay(2000);
