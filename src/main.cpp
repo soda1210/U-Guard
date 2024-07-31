@@ -1,7 +1,6 @@
 #include <Arduino.h>
 
 #include "display.h"
-#include "ePaperTools.h"
 
 Bike bike;
 BikeMode bikeMode;
